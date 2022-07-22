@@ -1,8 +1,8 @@
 ---
 
-docker_version: 18.09.6
-kubernetes_version: v1.15.0
-kubeadm_version: 1.15.0
+#docker_version: 18.09.6
+kubernetes_version: v1.22.0
+kubeadm_version: 1.22.0-00
 
 # kubernetes API load balanced VIP for HA installations
 kubernetes_loadbalanced_api_dns: k8s-api01.domain.local

@@ -32,7 +32,7 @@ kubeadm_config_options:
     controlPlaneEndpoint: "{{ kubernetes_loadbalanced_api_dns }}:6443"
     networking:
         podSubnet: 10.244.0.0/16
-    imageRepository: "{{ container_registry }}/keystone"
+    imageRepository: "{{ container_registry }}"
     useHyperKubeImage: true
     clusterName: "{{ kubernetes_cluster_label }}"
     etcd:

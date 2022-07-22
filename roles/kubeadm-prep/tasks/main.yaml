@@ -1,68 +1,87 @@
-- name: Remove swapfile from /etc/fstab
-  mount:
-    name: swap
-    fstype: swap
-    state: absent
+- name: Make the Swap inactive
+  command: swapoff -a
 
-- name: Turn swap off
-  shell: swapoff -a
+- name: create kubernetes repo variable
+  become: true
+  shell: |
+    echo "deb [allow-insecure=yes] http://CHANGEME:8081/apt-repo ./" > /etc/apt/sources.list
 
-- name: Set Enforce
-  command: setenforce 0
-  ignore_errors: True
+- name: update the packages
+  become: true
+  shell: |
+    apt update -y
 
-- name: Install kubelet package
-  become: yes
-  yum:
-    name: "kubelet-{{kubeadm_version}}"
-    enablerepo: kubernetes
-
-- name: Install kubectl package
-  become: yes
-  yum:
-    name: "kubectl-{{kubeadm_version}}"
-    enablerepo: kubernetes
-
-- name: Install kubeadm package
-  become: yes
-  yum:
-    name: "kubeadm-{{kubeadm_version}}"
-    enablerepo: kubernetes
-
-- name: Add vm swappiness
-  lineinfile:
-    path: /etc/sysctl.d/k8s.conf
-    line: 'vm.swappiness = 0'
+- name: containerd Installation
+  apt:
+    name: containerd
     state: present
-    create: yes
+    allow-unauthenticated: yes
 
-- name: Add vm overcommit_memory
-  lineinfile:
-    path: /etc/sysctl.d/k8s.conf
-    line: 'vm.overcommit_memory = 1'
+- name: Docker Installation
+  apt:
+    name: docker.io
     state: present
-    create: yes
+    allow-unauthenticated: yes
 
-- name: Add netbridge config ip4
-  lineinfile:
-    path: /etc/sysctl.d/k8s.conf
-    line: 'net.bridge.bridge-nf-call-iptables = 1'
+- name: install APT Transport HTTPS
+  apt:
+    name: apt-transport-https
     state: present
-    create: yes
+    allow-unauthenticated: yes
 
-- name: Increase net ipv4 tcp_max_syn_backlog
-  lineinfile:
-    path: /etc/sysctl.d/k8s.conf
-    line: 'net.ipv4.tcp_max_syn_backlog=2621440'
+- name: install kubelet
+  apt:
+    name: kubelet=1.22.0-00
     state: present
-    create: yes
+       allow-unauthenticated: yes
+       update_cache: true
 
-- name: update sysctl
-  command: sysctl --system
+- name: install kubeadm
+  apt:
+    name: kubeadm=1.22.0-00
+    state: present
+    allow-unauthenticated: yes
 
-- name: Start kubelet
-  systemd:
-    state: started
-    daemon_reload: yes
-    name: kubelet
-    enabled: yes
+- name: install ebtables
+  apt:
+    name: ebtables
+    state: present
+    allow-unauthenticated: yes
+
+- name: install acl
+  apt:
+    name: acl
+    state: present
+    allow-unauthenticated: yes
+
+- name: Creating a daemon json
+  copy:
+   dest: "/etc/docker/daemon.json"
+   content: |
+    {
+    "exec-opts": ["native.cgroupdriver=systemd"],
+    "insecure-registries": ["CHANGEME:5000"]
+    }
+
+- name: restarting the docker
+  ansible.builtin.shell: |
+    systemctl daemon-reload
+    systemctl restart docker
+    systemctl restart kubelet
+
+- name: Login to docker registry
+  shell: docker login CHANGEME:5000 -u iflocalregistry -p '&mF&FWnu'
+
+- name: Get k8s docker images
+  shell: kubeadm config images pull --image-repository CHANGEME:5000
+
+- name: Get other docker images
+  shell: "docker pull CHANGEME:5000/{{ item }}"
+  with_items:
+     - kube-webhook-certgen:v1.1.1
+     - controller:v1.2.0
+     - dashboard:v2.0.0
+     - metrics-scraper:v1.0.4
+     - mirrored-flannelcni-flannel:v0.18.1
+     - mirrored-flannelcni-flannel-cni-plugin:v1.1.0
+     - kibana:7.17.4

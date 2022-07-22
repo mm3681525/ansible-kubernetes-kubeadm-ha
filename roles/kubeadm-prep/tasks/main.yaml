@@ -29,18 +29,25 @@
     state: present
     allow-unauthenticated: yes
 
-- name: install kubelet
-  apt:
-    name: kubelet=1.22.0-00
-    state: present
-       allow-unauthenticated: yes
-       update_cache: true
-
 - name: install kubeadm
   apt:
     name: kubeadm=1.22.0-00
     state: present
     allow-unauthenticated: yes
+
+- name: install kubelet
+  apt:
+    name: kubelet=1.22.0-00
+    state: present
+    allow-unauthenticated: yes
+    update_cache: true
+
+- name: install kubectl
+  apt:
+    name: kubectl=1.22.0-00
+    state: present
+    allow-unauthenticated: yes
+    update_cache: true
 
 - name: install ebtables
   apt:

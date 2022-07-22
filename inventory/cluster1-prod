@@ -1,18 +1,18 @@
 [k8s-master-primary]
-master1.domain.local
+10.140.79.121
 
 [k8s-master-replicas]
-master2.domain.local
-master3.domain.local
+10.140.79.122
+10.140.79.123
 
 [k8s-masters:children]
 k8s-master-primary
 k8s-master-replicas
 
 [k8s-workers]
-worker1.domain.local
-worker2.domain.local
-worker3.domain.local
+10.140.79.107
+10.140.79.108
+10.140.79.109
 
 [k8s-nodes:children]
 k8s-masters

@@ -37,7 +37,7 @@ kubeadm_config_options:
     clusterName: "{{ kubernetes_cluster_label }}"
     etcd:
         local:
-            imageRepository: "{{ container_registry }}/keystone"
+            imageRepository: "{{ container_registry }}"
 
 
 # Addon Container Images

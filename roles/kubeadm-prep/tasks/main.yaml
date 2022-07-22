@@ -82,13 +82,9 @@
 - name: Get k8s docker images
   shell: kubeadm config images pull --image-repository 10.140.79.120:5000
 
-- name: Get other docker images
+- name: Get calico docker images
   shell: "docker pull 10.140.79.120:5000/{{ item }}"
   with_items:
-     - kube-webhook-certgen:v1.1.1
-     - controller:v1.2.0
-     - dashboard:v2.0.0
-     - metrics-scraper:v1.0.4
-     - mirrored-flannelcni-flannel:v0.18.1
-     - mirrored-flannelcni-flannel-cni-plugin:v1.1.0
-     - kibana:7.17.4
+     - calico/cni:v3.23.3
+     - calico/node:v3.23.3
+     - calico/kube-controllers:v3.23.3

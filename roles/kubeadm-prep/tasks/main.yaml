@@ -3,13 +3,11 @@
 
 - name: create kubernetes repo variable
   become: true
-  shell: |
-    echo "deb [allow-insecure=yes] http://10.140.79.120:8081/apt-repo ./" > /etc/apt/sources.list
+  shell: echo "deb [allow-insecure=yes] http://10.140.79.120:8081/apt-repo ./" > /etc/apt/sources.list
 
 - name: update the packages
   become: true
-  shell: |
-    apt update -y
+  shell: apt update -y
 
 - name: containerd Installation
   apt:
@@ -71,7 +69,7 @@
     }
 
 - name: restarting the docker
-  ansible.builtin.shell: |
+  shell: |
     systemctl daemon-reload
     systemctl restart docker
     systemctl restart kubelet

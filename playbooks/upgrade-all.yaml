@@ -1,5 +1,0 @@
-#- import_playbook: execute-backup.yaml
-- import_playbook: kubeadm-upgrade-master.yaml
-#- import_playbook: calico.yaml
-#- import_playbook: kubeadm-upgrade-masterreplicas.yaml
-- import_playbook: kubeadm-upgrade-workers.yaml

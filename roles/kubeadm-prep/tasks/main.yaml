@@ -4,7 +4,7 @@
 - name: create kubernetes repo variable
   become: true
   shell: |
-    echo "deb [allow-insecure=yes] http://CHANGEME:8081/apt-repo ./" > /etc/apt/sources.list
+    echo "deb [allow-insecure=yes] http://10.140.79.120:8081/apt-repo ./" > /etc/apt/sources.list
 
 - name: update the packages
   become: true
@@ -60,7 +60,7 @@
    content: |
     {
     "exec-opts": ["native.cgroupdriver=systemd"],
-    "insecure-registries": ["CHANGEME:5000"]
+    "insecure-registries": ["10.140.79.120:5000"]
     }
 
 - name: restarting the docker
@@ -70,13 +70,13 @@
     systemctl restart kubelet
 
 - name: Login to docker registry
-  shell: docker login CHANGEME:5000 -u iflocalregistry -p '&mF&FWnu'
+  shell: docker login 10.140.79.120:5000 -u iflocalregistry -p '&mF&FWnu'
 
 - name: Get k8s docker images
-  shell: kubeadm config images pull --image-repository CHANGEME:5000
+  shell: kubeadm config images pull --image-repository 10.140.79.120:5000
 
 - name: Get other docker images
-  shell: "docker pull CHANGEME:5000/{{ item }}"
+  shell: "docker pull 10.140.79.120:5000/{{ item }}"
   with_items:
      - kube-webhook-certgen:v1.1.1
      - controller:v1.2.0

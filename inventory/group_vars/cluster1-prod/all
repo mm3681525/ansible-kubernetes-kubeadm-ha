@@ -38,21 +38,3 @@ kubeadm_config_options:
     etcd:
         local:
             imageRepository: "{{ container_registry }}"
-
-
-# Addon Container Images
-tiller_image: "{{ container_registry }}/keystone/tiller:v2.12.1"
-
-# Filebeat Kafka Topic Name
-filebeat_app_id: kubernetes-logs-prod
-
-# Metricbeat Kafka Topic Name
-metricbeat_app_id: metricbeat-kubernetes-prod
-
-# Azure AD Admin group and AppID
-aad_admin_groupname: XXXXX
-aad_admin_groupid: XXXXX
-
-# Azure AD User group and AppID
-aad_user_groupname: XXXXX
-aad_user_groupid: XXXXX

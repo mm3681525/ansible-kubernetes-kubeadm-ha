@@ -11,8 +11,8 @@ k8s-master-replicas
 
 [k8s-workers]
 10.140.79.107
-10.140.79.108
 10.140.79.109
+10.140.79.110
 
 [k8s-nodes:children]
 k8s-masters

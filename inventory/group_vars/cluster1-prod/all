@@ -5,7 +5,7 @@ kubernetes_version: v1.22.0
 kubeadm_version: 1.22.0-00
 
 # kubernetes API load balanced VIP for HA installations
-kubernetes_loadbalanced_api_dns: k8s-api01.domain.local
+kubernetes_loadbalanced_api_dns: 10.140.79.121
 kubernetes_cluster_label: cluster1-prod
 
 # Container registry01
@@ -33,7 +33,6 @@ kubeadm_config_options:
     networking:
         podSubnet: 10.244.0.0/16
     imageRepository: "{{ container_registry }}"
-    useHyperKubeImage: true
     clusterName: "{{ kubernetes_cluster_label }}"
     etcd:
         local:

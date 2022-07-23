@@ -8,10 +8,7 @@
   replace:
     path: /tmp/calico.yaml
     regexp: "image: calico"
-    replace: "image: {{ container_registry }}/keystone"
+    replace: "image: {{ container_registry }}"
 
 - name: Create Calico Deployment
   shell: kubectl apply -f /tmp/calico.yaml
-
-- pause:
-    prompt: "Wait for containers to Pull and install"

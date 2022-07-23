@@ -1,7 +1,4 @@
 
-- pause:
-    prompt: "Wait before initializing master"
-
 - name: "Create kubeadm init config yaml"
   copy:
     content: "{{ kubeadm_config_options | to_nice_yaml }}"
@@ -12,9 +9,6 @@
   shell: kubeadm init --config=/tmp/kubeadm-config.yaml
   register: rslt
   ignore_errors: yes
-
-- pause:
-    prompt: "Validate kubeadm init"
 
 - name: Store init output
   action: copy content="{{ rslt.stdout }}" dest="/etc/kubernetes/kubeadm-init.stdout"

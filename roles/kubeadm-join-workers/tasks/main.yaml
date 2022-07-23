@@ -8,6 +8,3 @@
 
 - name: Run kubeadm join
   shell: "{{ kubeadm_join }}"
-
-- pause:
-    prompt: "Wait for containers to Pull and install"

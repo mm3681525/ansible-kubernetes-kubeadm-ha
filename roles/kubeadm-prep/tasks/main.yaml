@@ -86,3 +86,9 @@
      - calico/cni:v3.23.3
      - calico/node:v3.23.3
      - calico/kube-controllers:v3.23.3
+
+- name: Get kubernetes-dashboard docker images
+  shell: "docker pull 10.140.79.120:5000/{{ item }}"
+  with_items:
+     - dashboard:v2.0.0
+     - metrics-scraper:v1.0.4
